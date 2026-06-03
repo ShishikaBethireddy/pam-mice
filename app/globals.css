@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ── */
+@theme inline {
+  /* Surface */
+  --color-surface-page: #f5f5f5;
+  --color-surface-default: #ffffff;
+  --color-surface-inverse: #2b2b27;
+  --color-surface-tinted: #d6bfa4;
+  --color-surface-subtle: #edece8;
+  --color-surface-brand: #e8e8e8;
+  --color-surface-feature: #585858;
+
+  /* Text */
+  --color-text-primary: #2b2b27;
+  --color-text-secondary: #585858;
+  --color-text-tertiary: #969696;
+  --color-text-inverse: #ffffff;
+  --color-text-inverse-secondary: #bebeb9;
+  --color-text-brand: #767676;
+  --color-text-disabled: #b4b4b4;
+
+  /* Actions */
+  --color-action-primary: #000000;
+  --color-action-secondary: #f5f5f5;
+
+  /* Borders */
+  --color-border-default: #d0d0d0;
+  --color-border-strong: #969696;
+  --color-border-brand: #767676;
+
+  /* Brand accents */
+  --color-tan-50: #f2efec;
+  --color-tan-tinted: #b4b4b4;
+  --color-caption: #6d6655;
+  --color-dark-grey: #323232;
+
+  /* Fonts */
+  --font-sans: var(--font-poppins), sans-serif;
+  --font-serif: var(--font-cormorant), serif;
+  --font-display: var(--font-playfair), serif;
+
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-default: 12px;
+  --radius-full: 9999px;
+}
+
+/* ── Base ── */
+html {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100%;
+  background: #f5f5f5;
+  color: #2b2b27;
+  font-family: var(--font-poppins), sans-serif;
+}
+
+/* ── Mobile-first: center 390px column on larger screens ── */
+.mobile-frame {
+  max-width: 390px;
+  width: 100%;
+  margin-inline: auto;
+  position: relative;
+}
+
+/* ── Screen wrapper for desktop centering ── */
+.screen-wrap {
+  min-height: 100dvh;
+  background: #e8e8e8;
+  display: flex;
+  justify-content: center;
+}
+
+/* Hotel management desktop workspace */
+.hotel-desktop {
+  min-width: 1024px;
+}
+
+.hotel-desktop .mobile-frame,
+.hotel-desktop .screen-wrap {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  display: block;
+  background: transparent;
+}
+
+
+/* ── Typography helpers ── */
+.text-eyebrow {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.text-caption {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 4px;
+}
+
+/* ── Horizontal scroll (wedding cards) ── */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll-x::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Range slider reset ── */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  background: url('/assets/icon-slider-thumb.svg') center/contain no-repeat;
+  margin-top: -10px;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 3px;
+  background: linear-gradient(to right, #bebeb9, #757569 43.75%, #ca9151);
+  border-radius: 2px;
+}
+input[type='range']::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: url('/assets/icon-slider-thumb.svg') center/contain no-repeat;
+  border: none;
+  background-color: transparent;
+}
