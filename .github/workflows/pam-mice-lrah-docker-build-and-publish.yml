@@ -98,8 +98,8 @@ jobs:
             echo "::error::xray-results.json is not valid JSON. JFrog CLI may have written non-JSON lines to stdout alongside the payload; see https://github.com/jfrog/jfrog-cli/issues/1512"
             exit 1
           fi
-          CRITICAL=$(jq '(.vulnerabilities // []) | map(select(.severity == "Critical")) | length' "$XRAY_JSON")
-          HIGH=$(jq '(.vulnerabilities // []) | map(select(.severity == "High")) | length' "$XRAY_JSON")
+          CRITICAL=$(jq '[.[]?.vulnerabilities[]? | select(.severity == "Critical")] | length' "$XRAY_JSON")
+          HIGH=$(jq '[.[]?.vulnerabilities[]? | select(.severity == "High")] | length' "$XRAY_JSON")
           if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
             echo "::error::Found $CRITICAL critical and $HIGH high vulnerabilities"
             exit 1
