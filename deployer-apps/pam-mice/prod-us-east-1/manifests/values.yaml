@@ -9,7 +9,7 @@
 
 image:
   repository: mckinsey-pam-mice-docker-local.jfrog.io/pam-mice-starter-app
-  tag: SET_BY_CI_PIPELINE  # replaced by CI with semver+commit-hash (e.g., 0.1.0-fee4554a)
+  tag: 0.0.0-061b9fe2  # pinned to the exact image built & scanned in CI
   pullPolicy: IfNotPresent
 
 cloudflareZone: apps.mckinsey.com
