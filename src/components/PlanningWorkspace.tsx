@@ -187,10 +187,10 @@ export default function PlanningWorkspace({ activeStep, action, children }: Prop
           </div>
 
           <button
-            onClick={() => navigate("/event-planning")}
+            onClick={() => navigate("/account")}
             className="mt-auto inline-flex items-center gap-2 pt-8 text-[11px] font-medium uppercase tracking-[0.18em] text-ink-muted transition-colors hover:text-ink"
           >
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to planning
+            <ArrowLeft className="h-3.5 w-3.5" /> Back to my events
           </button>
         </aside>
 

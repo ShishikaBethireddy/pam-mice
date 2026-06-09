@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Building2, Hotel, MessageSquare, ShieldCheck, Sparkles, Building, CalendarCheck } from "lucide-react";
+import { ArrowRight, Building2, Hotel, ShieldCheck, Sparkles, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const PROPERTIES = [
@@ -42,36 +42,6 @@ const Landing = () => {
         "Unified RFP inbox across properties",
         "Scenario planner & availability",
         "One-click submission to Cvent + Salesforce",
-      ],
-    },
-    {
-      id: "partner-chat",
-      title: "Hotel Partner (Chat)",
-      tagline: "For PAM sales, revenue & on-property teams",
-      description:
-        "Manage inbound RFPs across Nobu, Hard Rock, and UNICO through a conversational chat interface. Build proposals, run scenarios, and submit in one click.",
-      icon: MessageSquare,
-      cta: "Continue to chat inbox",
-      to: "/inbox",
-      points: [
-        "Conversational RFP workspace",
-        "Scenario planner & availability via chat",
-        "One-click submission to Cvent + Salesforce",
-      ],
-    },
-    {
-      id: "event-servicing",
-      title: "Event Planning",
-      tagline: "For CMS & event servicing owners",
-      description:
-        "Pick up approved RFPs and turn them into flawless events — plan spaces, F&B, AV, and run-of-show, then hand a finished brief back to the property.",
-      icon: CalendarCheck,
-      cta: "Continue to event planning",
-      to: "/event-planning",
-      points: [
-        "Dashboard of approved RFPs ready to plan",
-        "Plan spaces, F&B, AV & run-of-show",
-        "Hand-off-ready event briefs",
       ],
     },
   ];

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import PlanningWorkspace from "@/components/PlanningWorkspace";
+import SocialPlanningShell from "@/components/SocialPlanningShell";
 import {
   Dialog,
   DialogContent,
@@ -26,22 +26,22 @@ interface Space {
 
 const SPACES: Space[] = [
   {
-    name: "Boardroom A",
-    use: "Board meeting",
-    setup: "Boardroom · 32",
-    capacity: 36,
+    name: "Tsuki Ballroom",
+    use: "Reception & dinner",
+    setup: "Banquet · 24",
+    capacity: 60,
     status: "Held",
-    defaultLayout: "boardroom",
+    defaultLayout: "banquet",
     layouts: [
-      { key: "boardroom", cap: 32 },
-      { key: "ushape", cap: 24 },
-      { key: "classroom", cap: 28 },
-      { key: "theater", cap: 40 },
+      { key: "banquet", cap: 60 },
+      { key: "cocktail", cap: 80 },
+      { key: "theater", cap: 90 },
+      { key: "lounge", cap: 40 },
     ],
   },
   {
-    name: "Sky Lounge",
-    use: "Welcome reception",
+    name: "Garden Terrace",
+    use: "Welcome cocktails",
     setup: "Cocktail",
     capacity: 60,
     status: "Held",
@@ -54,7 +54,7 @@ const SPACES: Space[] = [
   },
   {
     name: "Nobu Private Room",
-    use: "Board dinner",
+    use: "Family dinner",
     setup: "Banquet · 4 rounds",
     capacity: 32,
     status: "Tentative",
@@ -67,7 +67,7 @@ const SPACES: Space[] = [
   },
   {
     name: "Foyer",
-    use: "Coffee breaks",
+    use: "Cake & toasts",
     setup: "Standing",
     capacity: 40,
     status: "Pending",
@@ -93,14 +93,14 @@ const LAYOUT_LABEL: Record<LayoutKey, string> = {
 const STATUS_TONE: Record<SpaceStatus, string> = {
   Held: "bg-success-soft text-success",
   Tentative: "bg-warning-soft text-warning",
-  Pending: "bg-copper/10 text-copper",
+  Pending: "bg-brand-100 text-brand-700",
 };
 
 /* ---------------- Layout thumbnail ---------------- */
 
 function LayoutThumb({ kind, active }: { kind: LayoutKey; active: boolean }) {
-  const stroke = active ? "#6F7E50" : "#948D80";
-  const fill = active ? "#6F7E50" : "#C9C2B6";
+  const stroke = active ? "#7A4E8C" : "#9A9A9A";
+  const fill = active ? "#7A4E8C" : "#C4C4C4";
   const dot = (cx: number, cy: number, r = 1.6) => <circle cx={cx} cy={cy} r={r} fill={fill} />;
   return (
     <svg viewBox="0 0 64 48" className="h-full w-full">
@@ -207,11 +207,11 @@ const FURNITURE: { kind: FurnitureKind; label: string; w: number; h: number; rou
 type Placed = { id: string; kind: FurnitureKind; x: number; y: number };
 
 function FurnitureGlyph({ kind }: { kind: FurnitureKind }) {
-  if (kind === "round") return <div className="h-5 w-5 rounded-full border border-ink" />;
-  if (kind === "rect") return <div className="h-3 w-6 border border-ink" />;
-  if (kind === "chair") return <div className="h-3 w-3 border border-ink" />;
-  if (kind === "lectern") return <div className="h-3 w-4 border border-ink bg-cream" />;
-  return <div className="h-2 w-6 border border-ink bg-cream" />;
+  if (kind === "round") return <div className="h-5 w-5 rounded-full border border-grey-900" />;
+  if (kind === "rect") return <div className="h-3 w-6 border border-grey-900" />;
+  if (kind === "chair") return <div className="h-3 w-3 border border-grey-900" />;
+  if (kind === "lectern") return <div className="h-3 w-4 border border-grey-900 bg-grey-100" />;
+  return <div className="h-2 w-6 border border-grey-900 bg-grey-100" />;
 }
 
 function LayoutBuilderDialog({
@@ -260,10 +260,10 @@ function LayoutBuilderDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl bg-paper">
+      <DialogContent className="max-w-5xl bg-white">
         <DialogHeader>
-          <DialogTitle className="font-serif text-2xl text-ink">New layout · {spaceName}</DialogTitle>
-          <DialogDescription className="text-ink-muted">
+          <DialogTitle className="font-serif text-2xl text-grey-900">New layout · {spaceName}</DialogTitle>
+          <DialogDescription className="text-grey-500">
             Drag furniture from the palette onto the floor. Move items by dragging them. Capacity guide:{" "}
             {capacity} guests.
           </DialogDescription>
@@ -272,33 +272,33 @@ function LayoutBuilderDialog({
         <div className="grid grid-cols-[180px_1fr] gap-4">
           {/* Palette */}
           <div className="space-y-2">
-            <div className="mb-2 text-[10px] uppercase tracking-[0.2em] text-ink-muted">Furniture</div>
+            <div className="mb-2 text-[10px] uppercase tracking-[0.2em] text-grey-500">Furniture</div>
             {FURNITURE.map((f) => (
               <button
                 key={f.kind}
                 onClick={() => addItem(f.kind)}
-                className="flex w-full items-center gap-3 border border-border-subtle px-3 py-2 text-left hover:border-ink"
+                className="flex w-full items-center gap-3 border border-grey-200 px-3 py-2 text-left hover:border-grey-900"
               >
-                <div className="grid h-8 w-8 place-items-center bg-canvas">
+                <div className="grid h-8 w-8 place-items-center bg-grey-50">
                   <FurnitureGlyph kind={f.kind} />
                 </div>
-                <span className="text-xs text-ink">{f.label}</span>
+                <span className="text-xs text-grey-900">{f.label}</span>
               </button>
             ))}
 
             <div className="pt-4">
-              <div className="mb-2 text-[10px] uppercase tracking-[0.2em] text-ink-muted">Layout name</div>
+              <div className="mb-2 text-[10px] uppercase tracking-[0.2em] text-grey-500">Layout name</div>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full border border-border-default px-3 py-2 text-sm text-ink focus:border-ink focus:outline-none"
+                className="w-full border border-grey-300 px-3 py-2 text-sm text-grey-900 focus:border-grey-900 focus:outline-none"
               />
             </div>
           </div>
 
           {/* Canvas */}
           <div
-            className="relative select-none overflow-hidden border border-border-subtle bg-canvas"
+            className="relative select-none overflow-hidden border border-grey-200 bg-grey-50"
             style={{
               height: 460,
               backgroundImage:
@@ -316,18 +316,18 @@ function LayoutBuilderDialog({
                   key={it.id}
                   onMouseDown={(e) => onMouseDown(e, it.id)}
                   className={cn(
-                    "absolute cursor-move border border-ink bg-paper shadow-sm hover:ring-2 hover:ring-ink/20",
+                    "absolute cursor-move border border-grey-900 bg-white shadow-sm hover:ring-2 hover:ring-grey-900/20",
                     meta.round && "rounded-full",
                   )}
                   style={{ left: it.x, top: it.y, width: meta.w, height: meta.h }}
                 >
-                  <div className="grid h-full w-full place-items-center text-[9px] uppercase tracking-wider text-ink-soft">
+                  <div className="grid h-full w-full place-items-center text-[9px] uppercase tracking-wider text-grey-600">
                     {meta.label.split(" ")[0]}
                   </div>
                 </div>
               );
             })}
-            <div className="absolute bottom-2 right-3 text-[10px] uppercase tracking-[0.2em] text-ink-muted">
+            <div className="absolute bottom-2 right-3 text-[10px] uppercase tracking-[0.2em] text-grey-500">
               {items.length} items
             </div>
           </div>
@@ -336,14 +336,14 @@ function LayoutBuilderDialog({
         <div className="flex items-center justify-between pt-2">
           <button
             onClick={() => setItems([])}
-            className="text-[11px] uppercase tracking-[0.2em] text-ink-muted hover:text-ink"
+            className="text-[11px] uppercase tracking-[0.2em] text-grey-500 hover:text-grey-900"
           >
             Clear floor
           </button>
           <div className="flex items-center gap-3">
             <button
               onClick={() => onOpenChange(false)}
-              className="rounded-full border border-border-default px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-ink-soft hover:border-ink"
+              className="rounded-full border border-grey-300 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-grey-600 hover:border-grey-900"
             >
               Cancel
             </button>
@@ -352,7 +352,7 @@ function LayoutBuilderDialog({
                 toast.success(`Saved "${name}" for ${spaceName}.`);
                 onOpenChange(false);
               }}
-              className="rounded-full bg-ink px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-paper hover:bg-ink/90"
+              className="rounded-full bg-grey-900 px-4 py-2 text-[11px] uppercase tracking-[0.2em] text-white hover:bg-grey-700"
             >
               Save layout
             </button>
@@ -377,14 +377,14 @@ function SpaceCard({ space }: { space: Space }) {
     });
 
   return (
-    <div className="group relative rounded-xl border border-border-subtle bg-paper shadow-card transition-colors hover:border-border-default">
+    <div className="group relative rounded-xl border border-grey-200 bg-white transition-colors hover:border-grey-300">
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr]">
         {/* Left: identity + meta */}
-        <div className="flex flex-col border-b border-border-subtle p-6 lg:border-b-0 lg:border-r">
+        <div className="flex flex-col border-b border-grey-200 p-6 lg:border-b-0 lg:border-r">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="text-[10px] uppercase tracking-[0.25em] text-ink-muted">{space.use}</div>
-              <h3 className="mt-1 font-serif text-xl text-ink">{space.name}</h3>
+              <div className="text-[10px] uppercase tracking-[0.25em] text-grey-500">{space.use}</div>
+              <h3 className="mt-1 font-serif text-xl text-grey-900">{space.name}</h3>
             </div>
             <span
               className={cn(
@@ -398,16 +398,16 @@ function SpaceCard({ space }: { space: Space }) {
 
           <dl className="mt-6 space-y-3">
             <div className="flex items-baseline justify-between gap-4">
-              <dt className="text-[10px] uppercase tracking-[0.2em] text-ink-muted">Setup</dt>
-              <dd className="text-right text-sm text-ink">{space.setup}</dd>
+              <dt className="text-[10px] uppercase tracking-[0.2em] text-grey-500">Setup</dt>
+              <dd className="text-right text-sm text-grey-900">{space.setup}</dd>
             </div>
             <div className="flex items-baseline justify-between gap-4">
-              <dt className="text-[10px] uppercase tracking-[0.2em] text-ink-muted">Capacity</dt>
-              <dd className="text-sm text-ink">{space.capacity}</dd>
+              <dt className="text-[10px] uppercase tracking-[0.2em] text-grey-500">Capacity</dt>
+              <dd className="text-sm text-grey-900">{space.capacity}</dd>
             </div>
             <div className="flex items-baseline justify-between gap-4">
-              <dt className="text-[10px] uppercase tracking-[0.2em] text-ink-muted">Layouts</dt>
-              <dd className="text-sm text-ink">{space.layouts.length}</dd>
+              <dt className="text-[10px] uppercase tracking-[0.2em] text-grey-500">Layouts</dt>
+              <dd className="text-sm text-grey-900">{space.layouts.length}</dd>
             </div>
           </dl>
         </div>
@@ -415,10 +415,10 @@ function SpaceCard({ space }: { space: Space }) {
         {/* Right: layout options + CTA */}
         <div className="flex flex-col p-6">
           <div className="mb-4 flex items-center justify-between">
-            <div className="text-[10px] uppercase tracking-[0.25em] text-ink-muted">Layout options</div>
+            <div className="text-[10px] uppercase tracking-[0.25em] text-grey-500">Layout options</div>
             <button
               onClick={() => setBuilderOpen(true)}
-              className="text-[11px] uppercase tracking-[0.2em] text-ink-muted hover:text-ink"
+              className="text-[11px] uppercase tracking-[0.2em] text-grey-500 hover:text-grey-900"
             >
               + Add layout
             </button>
@@ -434,32 +434,32 @@ function SpaceCard({ space }: { space: Space }) {
                   className={cn(
                     "border p-2.5 text-left transition-all",
                     isSel
-                      ? "border-ink bg-ink/[0.03] ring-1 ring-ink"
-                      : "border-border-subtle hover:border-ink/40",
+                      ? "border-grey-900 bg-grey-900/[0.03] ring-1 ring-grey-900"
+                      : "border-grey-200 hover:border-grey-400",
                   )}
                 >
-                  <div className="grid aspect-[4/3] place-items-center overflow-hidden bg-copper/5">
+                  <div className="grid aspect-[4/3] place-items-center overflow-hidden bg-brand-100/40">
                     <LayoutThumb kind={l.key} active={isSel} />
                   </div>
                   <div className="mt-2 flex items-center justify-between gap-1">
-                    <span className="truncate text-[11px] font-medium text-ink">{LAYOUT_LABEL[l.key]}</span>
-                    <span className="text-[10px] text-ink-muted">{l.cap}</span>
+                    <span className="truncate text-[11px] font-medium text-grey-900">{LAYOUT_LABEL[l.key]}</span>
+                    <span className="text-[10px] text-grey-500">{l.cap}</span>
                   </div>
                 </button>
               );
             })}
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-4 border-t border-border-subtle pt-4">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-ink-muted">
+          <div className="mt-6 flex items-center justify-end gap-4 border-t border-grey-200 pt-4">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-grey-500">
               {selected.size} selected
             </span>
             <button
               disabled={selected.size === 0}
-              onClick={() => toast.success(`Sent ${selected.size} layout option(s) for ${space.name} to the client.`)}
-              className="whitespace-nowrap rounded-full bg-ink px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] text-paper hover:bg-ink/90 disabled:cursor-not-allowed disabled:opacity-40"
+              onClick={() => toast.success(`Added ${selected.size} layout option(s) for ${space.name}.`)}
+              className="whitespace-nowrap rounded-full bg-grey-900 px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] text-white hover:bg-grey-700 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Send to client
+              Add
             </button>
           </div>
         </div>
@@ -476,12 +476,12 @@ function SpaceCard({ space }: { space: Space }) {
 
 export default function Spaces() {
   return (
-    <PlanningWorkspace activeStep="spaces">
+    <SocialPlanningShell activeStep="spaces">
       <div className="flex flex-col gap-5">
         {SPACES.map((s) => (
           <SpaceCard key={s.name} space={s} />
         ))}
       </div>
-    </PlanningWorkspace>
+    </SocialPlanningShell>
   );
 }

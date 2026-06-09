@@ -1,8 +1,50 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { mockEventHistory, setMockUser, useMockUser, useSubmittedRfps } from "@/lib/mockAuth";
-import { LogOut, Building2, Mail, Calendar, Users, FileText, Clock } from "lucide-react";
+import {
+  LogOut,
+  Building2,
+  Mail,
+  Calendar,
+  Users,
+  FileText,
+  Clock,
+  ArrowRight,
+  CalendarClock,
+  ClipboardList,
+  PartyPopper,
+} from "lucide-react";
 import NobuTopNav from "@/components/NobuTopNav";
+import { rfps, currency, fmtDate, type Rfp } from "@/data/mockData";
+
+type PlanningStage = "ready" | "in_planning" | "finalizing" | "confirmed";
+
+const STAGE_META: Record<PlanningStage, { label: string; cls: string; progress: number }> = {
+  ready: { label: "Ready to plan", cls: "bg-brand-500/10 text-brand-500 border-brand-500/30", progress: 10 },
+  in_planning: { label: "In planning", cls: "bg-amber-500/10 text-amber-600 border-amber-500/30", progress: 45 },
+  finalizing: { label: "Finalizing", cls: "bg-amber-500/10 text-amber-600 border-amber-500/30", progress: 78 },
+  confirmed: { label: "Confirmed", cls: "bg-emerald-500/10 text-emerald-600 border-emerald-500/30", progress: 100 },
+};
+
+type PlanningEvent = {
+  rfp: Rfp;
+  stage: PlanningStage;
+  owner: string;
+  nextTask: string;
+};
+
+// Approved RFPs handed off to the planner — these open the full planning flow.
+const PLANNING_EVENTS: PlanningEvent[] = [
+  { id: "RFP-2041", stage: "ready", owner: "Maya Alvarez", nextTask: "Confirm space hold & kickoff call" },
+  { id: "RFP-2047", stage: "in_planning", owner: "Maya Alvarez", nextTask: "Lock F&B menus & private dining" },
+  { id: "RFP-2045", stage: "finalizing", owner: "Devin Park", nextTask: "Finalize breakout tracks & AV run-of-show" },
+  { id: "RFP-2043", stage: "confirmed", owner: "Devin Park", nextTask: "Distribute final event brief to property" },
+]
+  .map((e) => {
+    const rfp = rfps.find((r) => r.id === e.id);
+    return rfp ? { ...e, rfp } : null;
+  })
+  .filter((e): e is PlanningEvent => e !== null);
 
 export default function Account() {
   const user = useMockUser();
@@ -65,6 +107,82 @@ export default function Account() {
             value={mockEventHistory.reduce((s, e) => s + e.attendees, 0).toLocaleString()}
           />
           <Stat label="Open RFP requests" value={String(submittedRfps.length)} />
+        </section>
+
+        {/* Events ready to plan — opens the full planning flow */}
+        <section className="mb-12">
+          <div className="flex items-end justify-between mb-4">
+            <div>
+              <h2 className="font-serif text-2xl">Events ready to plan</h2>
+              <p className="text-sm text-grey-600 mt-1">
+                Your approved events — pick one up to plan spaces, F&amp;B, AV, and run-of-show.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            {PLANNING_EVENTS.map(({ rfp, stage, owner, nextTask }) => {
+              const meta = STAGE_META[stage];
+              return (
+                <button
+                  key={rfp.id}
+                  onClick={() => navigate(`/servicing/${rfp.id}/overview`)}
+                  className="group border border-grey-200 bg-white p-6 text-left transition-colors hover:border-brand-500/50"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-11 h-11 bg-grey-900 text-grey-50 grid place-items-center font-serif">
+                        {rfp.clientLogo}
+                      </div>
+                      <div>
+                        <div className="font-medium text-grey-900">{rfp.client}</div>
+                        <div className="text-xs text-grey-500">
+                          {rfp.eventName} · {rfp.id}
+                        </div>
+                      </div>
+                    </div>
+                    <span
+                      className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] uppercase tracking-wider ${meta.cls}`}
+                    >
+                      {meta.label}
+                    </span>
+                  </div>
+
+                  {/* Meta grid */}
+                  <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                    <MetaItem icon={CalendarClock} label="Dates" value={`${fmtDate(rfp.arrival)} · ${rfp.nights} nights`} />
+                    <MetaItem icon={Users} label="Peak rooms" value={String(rfp.peakRooms)} />
+                    <MetaItem icon={ClipboardList} label="Meeting space" value={`${rfp.meetingSpaceSqft.toLocaleString()} sqft`} />
+                    <MetaItem icon={PartyPopper} label="F&B budget" value={currency(rfp.fbBudget)} />
+                  </dl>
+
+                  {/* Planning progress */}
+                  <div className="mt-5">
+                    <div className="flex items-center justify-between text-[11px] text-grey-500 mb-1.5">
+                      <span className="uppercase tracking-wider">Planning progress</span>
+                      <span>{meta.progress}%</span>
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-grey-100">
+                      <div className="h-full rounded-full bg-brand-500 transition-all" style={{ width: `${meta.progress}%` }} />
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="mt-5 flex items-center justify-between gap-3 border-t border-grey-100 pt-4">
+                    <div className="min-w-0">
+                      <div className="text-[10px] uppercase tracking-wider text-grey-500">Next task</div>
+                      <div className="truncate text-sm text-grey-900">{nextTask}</div>
+                      <div className="mt-0.5 text-xs text-grey-500">Owner · {owner}</div>
+                    </div>
+                    <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-medium uppercase tracking-[0.18em] text-brand-500 opacity-70 group-hover:opacity-100">
+                      {stage === "confirmed" ? "View event" : "Start planning"}
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </section>
 
         {/* Submitted RFP requests */}
@@ -237,6 +355,26 @@ function Stat({ label, value }: { label: string; value: string }) {
     <div className="border border-grey-200 bg-white p-5">
       <div className="text-[10px] uppercase tracking-[0.2em] text-grey-500 mb-2">{label}</div>
       <div className="font-serif text-3xl">{value}</div>
+    </div>
+  );
+}
+
+function MetaItem({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof CalendarClock;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-start gap-2">
+      <Icon className="w-4 h-4 text-grey-400 mt-0.5 shrink-0" />
+      <div className="min-w-0">
+        <dt className="text-[10px] uppercase tracking-wider text-grey-500">{label}</dt>
+        <dd className="text-grey-900 font-medium truncate">{value}</dd>
+      </div>
     </div>
   );
 }

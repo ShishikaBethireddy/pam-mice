@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Leaf, Plus, WheatOff } from "lucide-react";
-import PlanningWorkspace from "@/components/PlanningWorkspace";
+import SocialPlanningShell from "@/components/SocialPlanningShell";
 import {
   Dialog,
   DialogContent,
@@ -40,7 +40,7 @@ function Pill({
       ? "bg-success-soft text-success"
       : tone === "warn"
         ? "bg-warning-soft text-warning"
-        : "bg-copper/10 text-copper";
+        : "bg-brand-100 text-brand-700";
   return (
     <span className={cn("inline-block rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.15em]", cls)}>
       {children}
@@ -64,12 +64,12 @@ function PackagePicker({ target, onClose }: { target: SlotTarget | null; onClose
 
   return (
     <Dialog open={Boolean(target)} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto bg-canvas">
+      <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto bg-white">
         <DialogHeader>
-          <DialogTitle className="font-serif text-2xl text-ink">
+          <DialogTitle className="font-serif text-2xl text-grey-900">
             {target.slotLabel} · Day {target.dayIdx + 1}
           </DialogTitle>
-          <DialogDescription className="text-ink-muted">
+          <DialogDescription className="text-grey-500">
             {required.length
               ? "Packages compatible with your guests' dietary needs are highlighted."
               : "No dietary requirements recorded — all packages work."}
@@ -87,25 +87,25 @@ function PackagePicker({ target, onClose }: { target: SlotTarget | null; onClose
                 key={pkg.id}
                 onClick={() => choose(pkg)}
                 className={cn(
-                  "rounded-xl border bg-paper p-4 text-left transition-colors",
+                  "rounded-xl border bg-white p-4 text-left transition-colors",
                   isSelected
-                    ? "border-ink ring-1 ring-ink/10"
+                    ? "border-grey-900 ring-1 ring-grey-900/10"
                     : compatible
                       ? "border-success/40 bg-success-soft/30 hover:border-success"
-                      : "border-border-subtle hover:border-copper",
+                      : "border-grey-200 hover:border-accent",
                 )}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <div className="text-sm font-medium text-ink">{pkg.name}</div>
-                    <div className="mt-0.5 text-xs text-ink-soft">{pkg.description}</div>
+                    <div className="text-sm font-medium text-grey-900">{pkg.name}</div>
+                    <div className="mt-0.5 text-xs text-grey-600">{pkg.description}</div>
                   </div>
                   <div className="flex-none text-right">
-                    <div className="font-serif text-lg text-ink">${pkg.pricePerPerson}</div>
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-ink-muted">per guest</div>
+                    <div className="font-serif text-lg text-grey-900">${pkg.pricePerPerson}</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-grey-500">per guest</div>
                   </div>
                 </div>
-                <p className="mt-3 text-xs text-ink-soft">{pkg.courses.join(" · ")}</p>
+                <p className="mt-3 text-xs text-grey-600">{pkg.courses.join(" · ")}</p>
                 <div className="mt-3 flex flex-wrap items-center gap-1.5">
                   {covers.map((t) => (
                     <span
@@ -128,7 +128,7 @@ function PackagePicker({ target, onClose }: { target: SlotTarget | null; onClose
             );
           })}
           {options.length === 0 && (
-            <p className="py-8 text-center text-sm text-ink-muted">
+            <p className="py-8 text-center text-sm text-grey-500">
               No packages configured for this meal yet.
             </p>
           )}
@@ -146,10 +146,10 @@ export default function FoodBeverage() {
   const pkgById = useMemo(() => new Map(packages.map((p) => [p.id, p])), [packages]);
 
   return (
-    <PlanningWorkspace activeStep="fnb">
+    <SocialPlanningShell activeStep="fnb">
       {/* Dietary needs pulled from the attendee list */}
-      <div className="mb-5 rounded-xl border border-border-subtle bg-paper px-5 py-4 shadow-card">
-        <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-muted">
+      <div className="mb-5 rounded-xl border border-grey-200 bg-white px-5 py-4">
+        <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-grey-500">
           <Leaf className="h-3.5 w-3.5" /> Dietary needs from attendee list
         </div>
         {diets.length ? (
@@ -157,7 +157,7 @@ export default function FoodBeverage() {
             {diets.map((d) => (
               <span
                 key={d.diet}
-                className="inline-flex items-center gap-2 rounded-full border border-copper/30 bg-copper/10 px-3 py-1 text-xs text-copper"
+                className="inline-flex items-center gap-2 rounded-full border border-brand-300/50 bg-brand-100 px-3 py-1 text-xs text-brand-700"
               >
                 <span>{d.diet}</span>
                 <span className="font-semibold">· {d.count}</span>
@@ -165,21 +165,21 @@ export default function FoodBeverage() {
             ))}
           </div>
         ) : (
-          <p className="mt-3 text-sm text-ink-muted">No dietary requirements recorded yet.</p>
+          <p className="mt-3 text-sm text-grey-500">No dietary requirements recorded yet.</p>
         )}
       </div>
 
       {/* Day-by-day meal grid */}
       <div className="space-y-5">
         {days.map((day, dayIdx) => (
-          <div key={day} className="overflow-hidden rounded-xl border border-border-subtle bg-paper shadow-card">
-            <div className="flex items-center justify-between border-b border-border-subtle bg-paper px-5 py-3">
-              <div className="text-sm font-medium text-ink">
+          <div key={day} className="overflow-hidden rounded-xl border border-grey-200 bg-white">
+            <div className="flex items-center justify-between border-b border-grey-200 bg-white px-5 py-3">
+              <div className="text-sm font-medium text-grey-900">
                 Day {dayIdx + 1} · {formatDayLong(day)}
               </div>
               <Pill>{MEAL_SLOTS.length} meals</Pill>
             </div>
-            <div className="grid gap-px bg-border-subtle sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-px bg-grey-200 sm:grid-cols-2 lg:grid-cols-3">
               {MEAL_SLOTS.map((slot) => {
                 const pkgId = fnb[mealKey(day, slot.key)];
                 const pkg = pkgId ? pkgById.get(pkgId) : undefined;
@@ -187,24 +187,24 @@ export default function FoodBeverage() {
                   setTarget({ day, dayIdx, slotKey: slot.key, slotLabel: slot.label });
 
                 return (
-                  <div key={slot.key} className="bg-paper p-4">
+                  <div key={slot.key} className="bg-white p-4">
                     <div className="flex items-start justify-between">
                       <div>
-                        <div className="text-sm font-medium text-ink">{slot.label}</div>
-                        <div className="text-xs text-ink-muted">{slot.time}</div>
+                        <div className="text-sm font-medium text-grey-900">{slot.label}</div>
+                        <div className="text-xs text-grey-500">{slot.time}</div>
                       </div>
                       {pkg ? <Pill tone="success">Selected</Pill> : <Pill>Empty</Pill>}
                     </div>
 
                     {pkg ? (
                       <div className="mt-3 space-y-1.5">
-                        <div className="text-sm text-ink">{pkg.name}</div>
-                        <div className="text-xs text-ink-soft">
+                        <div className="text-sm text-grey-900">{pkg.name}</div>
+                        <div className="text-xs text-grey-600">
                           ${pkg.pricePerPerson} /pp · {pkg.description}
                         </div>
                         <button
                           onClick={openPicker}
-                          className="text-[11px] font-medium uppercase tracking-[0.18em] text-copper hover:text-copper-hover"
+                          className="text-[11px] font-medium uppercase tracking-[0.18em] text-accent hover:text-brand-700"
                         >
                           Change package
                         </button>
@@ -212,7 +212,7 @@ export default function FoodBeverage() {
                     ) : (
                       <button
                         onClick={openPicker}
-                        className="mt-4 flex w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-border-default bg-canvas/40 px-4 py-6 text-center text-ink-muted transition-colors hover:border-copper hover:bg-copper/5 hover:text-copper"
+                        className="mt-4 flex w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-grey-300 bg-grey-50 px-4 py-6 text-center text-grey-500 transition-colors hover:border-accent hover:bg-brand-100/40 hover:text-accent"
                       >
                         <Plus className="h-4 w-4" />
                         <span className="text-xs">No menu selected</span>
@@ -228,6 +228,6 @@ export default function FoodBeverage() {
       </div>
 
       <PackagePicker target={target} onClose={() => setTarget(null)} />
-    </PlanningWorkspace>
+    </SocialPlanningShell>
   );
 }

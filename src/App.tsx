@@ -11,14 +11,14 @@ import Landing from "./pages/Landing.tsx";
 import NobuCorporate from "./pages/NobuCorporate.tsx";
 import PlanWithAllie from "./pages/PlanWithAllie.tsx";
 import EventPlanning from "./pages/EventPlanning.tsx";
-import AttendeeList from "./pages/planning/AttendeeList.tsx";
-import RoomBooking from "./pages/planning/RoomBooking.tsx";
+import SocialOverview from "./pages/planning/SocialOverview.tsx";
+import Guests from "./pages/planning/Guests.tsx";
+import RoomAllocation from "./pages/planning/RoomAllocation.tsx";
 import FoodBeverage from "./pages/planning/FoodBeverage.tsx";
 import Spaces from "./pages/planning/Spaces.tsx";
-import Decor from "./pages/planning/Decor.tsx";
-import Agenda from "./pages/planning/Agenda.tsx";
-import BillingOverview from "./pages/planning/BillingOverview.tsx";
-import BillingDocuments from "./pages/planning/BillingDocuments.tsx";
+import Vendors from "./pages/planning/Vendors.tsx";
+import Itinerary from "./pages/planning/Itinerary.tsx";
+import Payments from "./pages/planning/Payments.tsx";
 import Login from "./pages/Login.tsx";
 import Account from "./pages/Account.tsx";
 import RfpRequest from "./pages/RfpRequest.tsx";
@@ -49,18 +49,20 @@ const App = () => (
               </EventPlanningProvider>
             }
           >
-            <Route index element={<Navigate to="attendees" replace />} />
-            <Route path="attendees" element={<AttendeeList />} />
-            <Route path="rooms" element={<RoomBooking />} />
+            <Route index element={<Navigate to="overview" replace />} />
+            <Route path="overview" element={<SocialOverview />} />
+            <Route path="guests" element={<Guests />} />
+            <Route path="rooms" element={<RoomAllocation />} />
             <Route path="fnb" element={<FoodBeverage />} />
             <Route path="spaces" element={<Spaces />} />
-            <Route path="decor" element={<Decor />} />
-            <Route path="agenda" element={<Agenda />} />
-            <Route path="billing">
-              <Route index element={<Navigate to="overview" replace />} />
-              <Route path="overview" element={<BillingOverview />} />
-              <Route path="documents" element={<BillingDocuments />} />
-            </Route>
+            <Route path="vendors" element={<Vendors />} />
+            <Route path="itinerary" element={<Itinerary />} />
+            <Route path="payments" element={<Payments />} />
+            {/* Legacy paths → nearest social step */}
+            <Route path="attendees" element={<Navigate to="../guests" replace />} />
+            <Route path="decor" element={<Navigate to="../vendors" replace />} />
+            <Route path="agenda" element={<Navigate to="../itinerary" replace />} />
+            <Route path="billing/*" element={<Navigate to="../payments" replace />} />
           </Route>
           <Route path="/rfp/:id" element={<ProposalBuilder />} />
           <Route path="/integrations" element={<Integrations />} />

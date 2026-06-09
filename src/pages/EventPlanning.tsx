@@ -101,7 +101,7 @@ export default function EventPlanning() {
               return (
                 <button
                   key={rfp.id}
-                  onClick={() => navigate(`/servicing/${rfp.id}/attendees`)}
+                  onClick={() => navigate(`/servicing/${rfp.id}/overview`)}
                   className="group card-surface p-6 text-left transition-colors hover:border-primary/40"
                 >
                   <div className="flex items-start justify-between gap-3">
