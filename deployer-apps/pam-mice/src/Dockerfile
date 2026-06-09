@@ -6,6 +6,8 @@ COPY . .
 RUN npm run build
 
 FROM nginx:1.27-alpine
+# Patch OS-level packages (libxml2, libssl3, libcrypto3, musl, c-ares, ...) to clear base-image CVEs
+RUN apk -U upgrade --no-cache
 RUN addgroup -g 1001 -S appgroup && adduser -S appuser -u 1001 -G appgroup
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
