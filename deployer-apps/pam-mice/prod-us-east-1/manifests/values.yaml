@@ -6,15 +6,12 @@
 # - AWSWorkloadAccountID: 649941507750
 # - AWSWorkloadRegion: us-east-1
 # - CloudflareZone: apps.mckinsey.com
-#
-#
-# Example Helm values configuration:
-#
-# image:
-#   repository: <your-jfrog-repo>/pam-mice-app
-#   tag: SET_BY_CI_PIPELINE  # replaced by CI with semver+commit-hash (e.g., 0.1.0-fee4554a)
-#   pullPolicy: IfNotPresent
-#
+
+image:
+  repository: mckinsey-pam-mice-docker-local.jfrog.io/pam-mice-starter-app
+  tag: SET_BY_CI_PIPELINE  # replaced by CI with semver+commit-hash (e.g., 0.1.0-fee4554a)
+  pullPolicy: IfNotPresent
+
 cloudflareZone: apps.mckinsey.com
 subdomainPrefix: pam-mice
 ingressClass: nginx
@@ -23,15 +20,13 @@ labels:
   app.kubernetes.io/namespace-owner: "lrah-control-plane"
   app.kubernetes.io/lrah-user-product-id: 25086
   app.kubernetes.io/lrah-user-environment-id: pam-mice-7f3da
-#
-# imagePullSecrets:
-#   - name: jfrog-pam-mice-7f3da-secret
-#
-# env:
-#   NODE_ENV: production
-#   AWS_REGION: us-east-1
-#   # Add your environment variables here
-#
+
+imagePullSecrets:
+  - name: jfrog-pam-mice-7f3da-secret
+
+env:
+  NODE_ENV: production
+
 #
 ## For all databases you define in terraform/main.tf
 #
@@ -74,4 +69,3 @@ labels:
 #   MID_OIDC_CONFIG_URL: https://auth.mckinsey.id/auth/realms/r/.well-known/openid-configuration
 #   MID_CLIENT_ID: <your-client-id>
 #   MID_CLIENT_SECRET: <your-client-secret>
-

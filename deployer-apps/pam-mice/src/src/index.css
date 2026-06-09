@@ -1,0 +1,338 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   RCD Design System applied to PAM MICE
+   Warm ink / copper / canvas palette + Isabella Grand & Poppins.
+   Semantic tokens are kept in HSL so existing shadcn utilities
+   (bg-background, text-primary, border-border, …) keep working,
+   but their VALUES now resolve to the RCD palette.
+   ============================================================ */
+
+/* ---- Display typeface: Isabella Grand --------------------- */
+@font-face {
+  font-family: "Isabella Grand";
+  src: url("/fonts/IsabellaGrand-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Isabella Grand";
+  src: url("/fonts/IsabellaGrand-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Isabella Grand Plain";
+  src: url("/fonts/IsabellaGrand-Plain.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---- Body / UI typeface: Poppins -------------------------- */
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    /* ----- RCD warm neutral ramp (HSL triplets) -------------
+       grey-50  → canvas (warm cream page bg)
+       grey-900 → ink (charcoal primary text & buttons)        */
+    --grey-50:  36 43% 93%;   /* #F5EFE6 canvas */
+    --grey-100: 36 40% 90%;   /* #F0E8DC cream-soft */
+    --grey-200: 37 20% 87%;   /* #E5E0D8 border-subtle */
+    --grey-300: 38 15% 75%;   /* #C9C2B6 border-default */
+    --grey-400: 33 11% 69%;   /* #B8B0A6 disabled-fg */
+    --grey-500: 39 9% 54%;    /* #948D80 ink-muted (tertiary text) */
+    --grey-600: 37 8% 42%;    /* secondary text */
+    --grey-700: 37 8% 33%;    /* #5A554D ink-soft */
+    --grey-800: 45 5% 24%;    /* deep warm charcoal */
+    --grey-900: 60 3% 16%;    /* #2A2A28 ink */
+
+    /* ----- Brand → Sage green (replaces warm mustard/copper) -
+       Built around the ribbon sage #B0B89E from brand reference. */
+    --brand-100: 79 25% 85%;  /* #DCE2CF light sage tint */
+    --brand-300: 79 15% 67%;  /* #B0B89E sage ribbon/tinted */
+    --brand-500: 80 22% 40%;  /* #6F7E50 deep sage accent */
+    --brand-700: 80 26% 30%;  /* deep sage (fallback) */
+
+    --background: var(--grey-50);            /* Surface/Page canvas */
+    --foreground: var(--grey-900);           /* Text/Primary ink */
+
+    --card: 0 0% 100%;                       /* paper */
+    --card-foreground: var(--grey-900);
+
+    --popover: 0 0% 100%;
+    --popover-foreground: var(--grey-900);
+
+    --primary: var(--grey-900);              /* Action/Primary ink */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: var(--grey-100);            /* Surface/Subtle cream */
+    --secondary-foreground: var(--grey-900);
+
+    --muted: var(--grey-100);
+    --muted-foreground: var(--grey-600);     /* Text/Secondary */
+
+    --accent: var(--brand-100);              /* Surface/Tinted copper-soft */
+    --accent-foreground: var(--grey-900);
+
+    --gold: var(--brand-500);                /* Text/Brand copper */
+    --gold-soft: var(--brand-100);
+    --success: 152 30% 30%;
+    --success-soft: 152 22% 90%;
+    --warning: 30 41% 45%;
+    --warning-soft: 34 48% 90%;
+    --info: 37 8% 33%;
+    --info-soft: 36 40% 92%;
+
+    --destructive: 358 55% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: var(--grey-200);               /* Border/Default */
+    --input: var(--grey-300);
+    --ring: var(--brand-500);                /* Border/Focus -> copper */
+
+    --radius: 0.75rem;                       /* RCD default 12px */
+
+    --shadow-card: 0 1px 2px hsl(36 20% 30% / 0.06), 0 8px 24px -12px hsl(36 20% 20% / 0.10);
+    --shadow-elevated: 0 2px 4px hsl(36 20% 30% / 0.08), 0 24px 48px -16px hsl(36 20% 20% / 0.18);
+    --gradient-hero: linear-gradient(135deg, hsl(60 3% 16%) 0%, hsl(45 5% 24%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(79 22% 60%) 0%, hsl(80 22% 38%) 100%);
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: var(--grey-700);
+    --sidebar-primary: var(--grey-900);
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: var(--grey-100);
+    --sidebar-accent-foreground: var(--grey-900);
+    --sidebar-border: var(--grey-200);
+    --sidebar-ring: var(--brand-500);
+  }
+
+  .dark {
+    --background: 60 3% 10%;
+    --foreground: 36 43% 93%;
+
+    --card: 60 3% 13%;
+    --card-foreground: 36 43% 93%;
+
+    --popover: 60 3% 13%;
+    --popover-foreground: 36 43% 93%;
+
+    --primary: 36 43% 93%;
+    --primary-foreground: 60 3% 16%;
+
+    --secondary: 45 5% 20%;
+    --secondary-foreground: 36 43% 93%;
+
+    --muted: 45 5% 20%;
+    --muted-foreground: 33 11% 69%;
+
+    --accent: 30 41% 35%;
+    --accent-foreground: 36 43% 93%;
+
+    --destructive: 0 50% 35%;
+    --destructive-foreground: 36 43% 93%;
+
+    --border: 45 5% 22%;
+    --input: 45 5% 22%;
+    --ring: 30 41% 50%;
+    --sidebar-background: 60 3% 12%;
+    --sidebar-foreground: 36 30% 88%;
+    --sidebar-primary: 30 41% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 45 5% 20%;
+    --sidebar-accent-foreground: 36 43% 93%;
+    --sidebar-border: 45 5% 22%;
+    --sidebar-ring: 30 41% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Poppins", "Inter", "Helvetica Neue", system-ui, sans-serif;
+  }
+  .font-serif {
+    font-family: "Isabella Grand", "Cormorant Garamond", Georgia, serif;
+    letter-spacing: 0;
+  }
+}
+
+@layer components {
+  .card-surface {
+    @apply bg-card border border-border rounded-lg;
+    box-shadow: var(--shadow-card);
+  }
+  .hairline {
+    @apply border-t border-border;
+  }
+
+  /* ============================================================
+     RCD Button .btn + role + size
+     Class API: .btn .btn--{primary|secondary|ghost} .btn--{default|small|icon|icon-sm}
+     ============================================================ */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           font-sans font-semibold leading-none whitespace-nowrap
+           rounded-full select-none cursor-pointer
+           transition-colors duration-200
+           focus:outline-none focus-visible:ring-[3px] focus-visible:ring-offset-2
+           focus-visible:ring-offset-canvas focus-visible:ring-ink;
+  }
+  .btn--default { @apply h-11 px-6 text-base; }
+  .btn--small   { @apply h-9 px-[18px] text-sm; }
+  .btn--icon    { @apply h-11 w-11 p-0 text-base; }
+  .btn--icon-sm { @apply h-9 w-9 p-0 text-sm; }
+
+  .btn--primary {
+    @apply bg-ink text-paper hover:bg-ink-soft active:bg-black;
+  }
+  .btn--secondary {
+    @apply bg-copper text-paper hover:bg-copper-hover active:bg-copper-active;
+  }
+  .btn--ghost {
+    @apply bg-transparent text-ink border border-ink hover:bg-cream active:bg-cream-soft;
+  }
+  .btn--block { @apply w-full justify-center; }
+
+  .btn[disabled],
+  .btn.is-disabled {
+    @apply pointer-events-none;
+  }
+  .btn--primary[disabled], .btn--primary.is-disabled,
+  .btn--secondary[disabled], .btn--secondary.is-disabled {
+    @apply bg-disabled-bg text-disabled-fg;
+  }
+  .btn--ghost[disabled], .btn--ghost.is-disabled {
+    @apply bg-transparent text-disabled-fg border-border-subtle;
+  }
+
+  /* ---- Form: field shell + native input -------------------- */
+  .field {
+    @apply flex w-full min-h-11 items-center justify-between gap-3 rounded-full
+           border border-border-default bg-paper px-4 py-2 font-sans text-ink shadow-sm
+           text-left transition-[border-color,box-shadow] duration-200 hover:border-ink/20;
+  }
+  .field__value {
+    @apply min-w-0 flex-1 truncate font-serif text-2xl leading-none text-ink;
+  }
+  .field__trail { @apply shrink-0 text-ink-muted; }
+
+  .input {
+    @apply box-border h-11 w-full rounded-full border border-border-default bg-paper
+           px-4 font-sans text-base font-normal leading-normal text-ink shadow-sm
+           placeholder:text-ink-muted
+           transition-[border-color,box-shadow] duration-200 hover:border-ink/15
+           focus:border-ink focus:outline-none focus:ring-[3px] focus:ring-ink/25
+           focus:ring-offset-2 focus:ring-offset-canvas;
+  }
+  .input:disabled {
+    @apply cursor-not-allowed border-border-subtle bg-disabled-bg text-disabled-fg;
+  }
+}
+
+/* ============================================================
+   Social Events planning workspace scoped theme override
+   ------------------------------------------------------------
+   The host-facing celebration planning workspace adopts the
+   Social Events "Cabo sunset" identity: cool neutral greys +
+   a purple brand ramp. Scoping the token overrides to
+   `.social-portal` keeps the rest of the MICE app on its warm
+   sage/cream palette while these utilities (bg-grey-*, bg-brand-*,
+   text-accent, text-muted-foreground, border-border …) resolve
+   to the on-brand purple values inside the workspace subtree.
+   ============================================================ */
+.social-portal {
+  /* Cool neutral grey ramp */
+  --grey-50: 0 0% 98%;
+  --grey-100: 0 0% 95%;
+  --grey-200: 0 0% 89%;
+  --grey-300: 0 0% 78%;
+  --grey-400: 0 0% 60%;
+  --grey-500: 0 0% 45%;
+  --grey-600: 0 0% 33%;
+  --grey-700: 0 0% 24%;
+  --grey-800: 0 0% 15%;
+  --grey-900: 0 0% 11%;
+
+  /* Cabo-sunset purple brand ramp */
+  --brand-100: 270 44% 94%;
+  --brand-300: 275 37% 80%;
+  --brand-500: 279 33% 44%;
+  --brand-700: 279 38% 31%;
+
+  /* Semantic remaps so shadcn utilities resolve on-brand here */
+  --background: 0 0% 98%;
+  --foreground: 0 0% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 11%;
+  --border: 0 0% 89%;
+  --input: 0 0% 89%;
+  --muted: 270 44% 94%;
+  --muted-foreground: 0 0% 33%;
+  --accent: 279 33% 44%;
+  --accent-foreground: 0 0% 100%;
+  --primary: 0 0% 11%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 270 44% 94%;
+  --secondary-foreground: 0 0% 11%;
+  --ring: 279 33% 44%;
+}
+
+@layer utilities {
+  /* Cabo-sunset ribbon gradient (twilight → plum → rose) */
+  .bg-sunset-gradient {
+    background-image: linear-gradient(
+      90deg,
+      #5b3a7a 0%,
+      #8e4585 55%,
+      #c66b96 100%
+    );
+  }
+
+  /* Faint dotted lavender texture for the overview "core plan" band */
+  .bg-texture-soft {
+    background-color: hsl(265 42% 89% / 0.16);
+    background-image:
+      radial-gradient(hsl(279 33% 44% / 0.05) 1px, transparent 1px),
+      radial-gradient(hsl(279 33% 44% / 0.04) 1px, transparent 1px);
+    background-size: 22px 22px, 22px 22px;
+    background-position: 0 0, 11px 11px;
+  }
+}

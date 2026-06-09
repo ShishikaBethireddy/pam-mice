@@ -1,0 +1,19 @@
+# Common (all stacks)
+.git
+.gitignore
+*.md
+.env*
+.DS_Store
+coverage
+
+# Node.js
+node_modules
+.next
+dist
+dist-ssr
+.nyc_output
+
+# Editor / OS
+.vscode
+.idea
+*.local
